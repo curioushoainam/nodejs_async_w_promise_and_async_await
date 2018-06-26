@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Asynchronous</title>
+<script type="text/javascript">
+	let add = (a, b) => {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				if (typeof a != 'number' || typeof b != 'number') {	
+					return reject(new Error('Tham so phai co kieu number'));
+				}
+				resolve(a + b);
+			}, 2000);
+		});
+	};
+
+	// let a = add(4, 5)
+	// 	.then(result => console.log(result),		// không có giá trị trả về
+	// 			err => console.log(err + ''));		// không có giá trị trả về
+	// console.log(a);		// undefined
+	// setTimeout(() => console.log(a), 2500);		// undefined
+
+	// let a = add(4, '5')
+	// 	.then(result => "Ket qua: " + result,		// giá trị trả về: "Ket qua: " + result
+	// 			err => "Loi : " + err);				// giá trị trả về: "Loi : " + err
+	// console.log(a);		// undefined
+	// setTimeout(() => console.log(a), 2500);		//  9 (resolved)
+
+	// let a = add(4, '5')		
+	// console.log(a);		// undefined
+	// setTimeout(() => console.log(a), 2500);		// rejected
+
+	// Như vậy, 'then' trả về 2 trường hợp
+	// 1. trả về promise (như file pr3.js)
+	// 2. luôn trả về một promise / resolved được gán value là handle của 'then'
+	// 3. Khi handle không có giá trị trả về (console.log) thì resolved được gán undefined
+	// 4. Lỗi nhưng được handle (trong 'then') thì có nghĩa là thành công (resolved); lỗi chưa được xử lý thì promise sẽ trả về thất bại (rejected)
+
+	// let a = add(4, '5')
+	// 	.then(result => {
+	// 		console.log('1st then : ' + result);
+	// 		return "Ket qua: " + result;
+	// 	}, err => {
+	// 		console.log('1st then : ' + err);
+	// 		return ("Loi : " + err);
+
+	// 	})
+	// 	.then((res) => console.log('Successful ! ' + res));	// res là kết quả của then thứ 1 trả về
+	// console.log(a);		// undefined
+	// setTimeout(() => console.log(a), 2500);		//  undefined vì then sau trả về undefined
+
+	// =======================================================================================
+	// Phương thức resolve và reject
+	// let aPromise = Promise.resolve(4);
+	// console.log(aPromise);				// promise -> resolved -> value = 4
+
+	// let aPromise = Promise.resolve(add(4,5));		// ở trạng thái pending => có thể dùng .then
+	// aPromise.then(res => console.log('Result is ' + res));
+	// console.log(aPromise);
+
+	// let rPr = Promise.reject(new Error("Make a mistake"));
+	// console.log(rPr);						// promise -> rejected -> Error: Make a mistake
+
+	let rPr = Promise.reject(new Error("Make a mistake"));
+	rPr.catch(e => console.log(e + ''));
+	console.log(rPr);					// promise -> rejected -> Error: Make a mistake
+
+</script>
+</head>
+<body>
+	<h1>Hello, Asynchronous</h1>	
+</body>
+</html>
